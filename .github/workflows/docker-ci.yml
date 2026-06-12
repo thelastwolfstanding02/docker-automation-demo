@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  pull_request:
 
 jobs:
   build:
@@ -12,22 +13,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Test Docker Hub API directly
-        run: |
-          RESPONSE=$(curl -s -X POST https://hub.docker.com/v2/users/login/ \
-            -H "Content-Type: application/json" \
-            -d '{"username":"thelastwolfstanding","password":"${{ secrets.DOCKERHUB_TOKEN }}"}')
-          echo "API Response: $RESPONSE"
-          if echo "$RESPONSE" | grep -q "token"; then
-            echo "✅ Token is VALID"
-          else
-            echo "❌ Token is INVALID or account issue"
-          fi
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v6
+        with:
+          images: thelastwolfstanding/mi-app
 
       - name: Log in to Docker Hub
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
-          registry: docker.io
           username: thelastwolfstanding
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
@@ -42,7 +36,8 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v7
         with:
-          push: true
-          tags: thelastwolfstanding/mi-app:latest
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          annotations: ${{ steps.meta.outputs.annotations }}
           provenance: true
           sbom: true
