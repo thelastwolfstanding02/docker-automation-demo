@@ -15,8 +15,17 @@ jobs:
       - name: Login Docker Hub
         run: echo "dckr_pat_Cv1e3xsSAQ5PBTioQJNdgj-eb8w" | docker login -u thelastwolfstanding --password-stdin
 
-      - name: Build imagen
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run unit tests
+        run: npm test
+
+      - name: Generate coverage metrics
+        run: npm run test:coverage
+
+      - name: Build Docker image
         run: docker build -t thelastwolfstanding/mi-app:latest .
 
-      - name: Push imagen
+      - name: Push Docker image
         run: docker push thelastwolfstanding/mi-app:latest
