@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "main": "build/index.js",
   "scripts": {
-    "build": "mkdir build && echo 'console.log(\"Hola desde Docker\")' > build/index.js",
     "test": "node test.js",
     "test:coverage": "node test.js && echo 'Statements: 85% | Branches: 78% | Functions: 92% | Lines: 85%'"
   }
