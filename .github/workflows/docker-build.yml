@@ -1,0 +1,22 @@
+name: Docker Build y Push
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Login Docker Hub
+        run: echo "dckr_pat_Cv1e3xsSAQ5PBTioQJNdgj-eb8w" | docker login -u thelastwolfstanding --password-stdin
+
+      - name: Build imagen
+        run: docker build -t thelastwolfstanding/mi-app:latest .
+
+      - name: Push imagen
+        run: docker push thelastwolfstanding/mi-app:latest
