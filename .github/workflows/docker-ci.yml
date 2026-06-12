@@ -12,8 +12,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Docker Login (Manual)
-        run: docker login -u thelastwolfstanding --password-stdin <<< "${{ secrets.DOCKERHUB_TOKEN }}"
+      - name: Docker Login Manual
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u thelastwolfstanding --password-stdin
 
       - name: Build Docker image
         run: docker build -t thelastwolfstanding/mi-app:latest .
