@@ -1,0 +1,9 @@
+{
+  "name": "mi-app-docker",
+  "version": "1.0.0",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "mkdir -p build && echo 'console.log(\"Hola desde Docker\")' > build/index.js",
+    "test": "node -e \"console.log('Pruebas unitarias OK')\""
+  }
+}
