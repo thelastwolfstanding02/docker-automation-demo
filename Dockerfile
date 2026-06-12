@@ -1,13 +1,14 @@
-# syntax=docker/dockerfile:1
-FROM node:lts-alpine AS builder
-WORKDIR /src
+FROM node:lts-alpine
+
+WORKDIR /app
+
 COPY package.json ./
 RUN npm install
-COPY . .
-RUN npm run build
 
-FROM node:lts-alpine AS release
-WORKDIR /app
-COPY --from=builder /src/build .
+COPY . .
+
+RUN mkdir -p build && echo "console.log('Hola desde Docker')" > build/index.js
+
 EXPOSE 3000
-CMD ["node", "."]
+
+CMD ["node", "build/index.js"]
