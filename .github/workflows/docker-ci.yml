@@ -19,6 +19,18 @@ jobs:
         with:
           images: thelastwolfstanding/mi-app
 
+      - name: Debug secret (verificar si el token llega)
+        run: |
+          if [ -n "$DOCKERHUB_TOKEN" ]; then
+            echo "✅ Token exists, length: ${#DOCKERHUB_TOKEN}"
+            echo "First 4 chars: ${DOCKERHUB_TOKEN:0:4}"
+            echo "Last 4 chars: ${DOCKERHUB_TOKEN: -4}"
+          else
+            echo "❌ Token is EMPTY! Check your secret configuration."
+          fi
+        env:
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
       - name: Log in to Docker Hub
         uses: docker/login-action@v4
         with:
